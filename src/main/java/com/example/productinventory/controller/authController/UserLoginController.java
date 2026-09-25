@@ -5,6 +5,7 @@ import com.example.productinventory.dto.Login.LoginResponse;
 import com.example.productinventory.dto.userRegisterDto.UserRegisterRequset;
 import com.example.productinventory.dto.userRegisterDto.UserRegisterResponse;
 import com.example.productinventory.security.AuthService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,7 +26,7 @@ public class UserLoginController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserRegisterResponse>  register(@RequestBody UserRegisterRequset request){
+    public ResponseEntity<UserRegisterResponse>  register(@Valid @RequestBody UserRegisterRequset request){
         String encode = encoder.encode(request.getPassword());
         request.setPassword(encode);
         UserRegisterResponse register = authService.register(request);

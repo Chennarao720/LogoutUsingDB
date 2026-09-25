@@ -41,6 +41,7 @@ public class ProductService {
     }
 
 
+
     //Common for Updating
     private AvailabilityOfProduct calculateAvailability(Integer stock) {
 

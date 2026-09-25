@@ -79,10 +79,18 @@ public class SecurityConfig {
                 // Authorization
                 .authorizeHttpRequests(auth -> auth
                         // Authentication APIs
+
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/v3/api-docs/**"
+                        ).permitAll()
                         .requestMatchers(
                                 "/api/auth/**"
                         ).permitAll()
                         .requestMatchers(HttpMethod.POST, "/products/**")
+                        .hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/products/*/stock")
                         .hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/category/**")
                         .hasRole("ADMIN")

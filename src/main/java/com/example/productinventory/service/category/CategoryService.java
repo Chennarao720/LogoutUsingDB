@@ -18,11 +18,13 @@ import java.util.stream.Collectors;
 public class CategoryService {
     private final CategoryRepository repository;
     private final ModelMapper mapper;
+    private final ProductRepository repo;
 
 
-    public CategoryService(CategoryRepository repository, ModelMapper mapper) {
+    public CategoryService(CategoryRepository repository, ModelMapper mapper,ProductRepository repo) {
         this.repository = repository;
         this.mapper = mapper;
+        this.repo=repo;
     }
 
     public CategoryResponse addCategory(CategoryRequest request) {
@@ -35,7 +37,7 @@ public class CategoryService {
 
 
     public List<CategoryStockResponse> getTotalStockByCategory() {
-        List<Product> products = repository.
+        List<Product> products = repo.findAll();
 
         return products.stream()
                 .collect(Collectors.groupingBy(
