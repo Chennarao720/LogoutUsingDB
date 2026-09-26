@@ -1,5 +1,8 @@
 package com.example.productinventory.service.product;
 
+import com.example.productinventory.dto.exception.CategoryNotFoundException;
+import com.example.productinventory.dto.exception.InsufficientStockException;
+import com.example.productinventory.dto.exception.ProductNotFoundException;
 import com.example.productinventory.dto.product.ProductResponse;
 import com.example.productinventory.dto.product.ProductSaveRequest;
 import com.example.productinventory.dto.product.ProductSaveResponse;
@@ -29,7 +32,7 @@ public class ProductService {
 
     public ProductSaveResponse addproduct(ProductSaveRequest request){
         Category category = categoryRepository.findByName(request.getCategoryname()).orElseThrow(() -> {
-            return new RuntimeException("Category is not found with name " + request.getCategoryname());
+            return new CategoryNotFoundException("Category is not found with name " + request.getCategoryname());
         });
 
         Product product = mapper.map(request, Product.class);
@@ -60,7 +63,7 @@ public class ProductService {
 
         Product product = repository.findById(productId)
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new ProductNotFoundException(
                                 "Product not found with id " + productId
                         ));
 
@@ -75,7 +78,7 @@ public class ProductService {
         } else if (request.getOperation() == StockOperation.DECREASE) {
 
             if (currentStock < request.getQuantity()) {
-                throw new RuntimeException(
+                throw new InsufficientStockException(
                         "Insufficient stock"
                 );
             }
@@ -107,7 +110,7 @@ public class ProductService {
 
         Product product = repository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Product not found with id: " + id)
+                        new ProductNotFoundException("Product not found with id: " + id)
                 );
         return mapper.map(product, ProductResponse.class);
     }

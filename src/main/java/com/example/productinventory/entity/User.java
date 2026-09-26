@@ -26,7 +26,7 @@ public class User {
     private String email;
 
     @Enumerated(EnumType.STRING)
-    private Role role=Role.USER    ;
+    private Role role=Role.USER;
 
     private Boolean enabled = true;
 
