@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+
+    <!-- ========================= -->
+    <!-- CONSOLE APPENDER           -->
+    <!-- ========================= -->
+
+    <appender name="CONSOLE"
+              class="ch.qos.logback.core.ConsoleAppender">
+
+        <encoder>
+            <pattern>
+                %d{yyyy-MM-dd HH:mm:ss.SSS}
+                [%thread]
+                %-5level
+                %logger{36} -
+                %msg%n
+            </pattern>
+        </encoder>
+
+    </appender>
+
+
+    <!-- ========================= -->
+    <!-- ROLLING FILE APPENDER      -->
+    <!-- ========================= -->
+
+    <appender name="ROLLING_FILE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <!-- Current log file -->
+        <file>logs/product-inventory.log</file>
+
+        <!-- Rolling policy -->
+        <rollingPolicy
+                class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+
+            <!-- Example:
+                 product-inventory.2026-09-26.0.log.gz
+                 product-inventory.2026-09-26.1.log.gz
+            -->
+
+            <fileNamePattern>
+                logs/product-inventory.%d{yyyy-MM-dd}.%i.log.gz
+            </fileNamePattern>
+
+            <!-- Maximum size of one log file -->
+            <maxFileSize>10MB</maxFileSize>
+
+            <!-- Keep logs for 30 days -->
+            <maxHistory>30</maxHistory>
+
+            <!-- Maximum total size of all archived logs -->
+            <totalSizeCap>1GB</totalSizeCap>
+
+        </rollingPolicy>
+
+
+        <encoder>
+            <pattern>
+                %d{yyyy-MM-dd HH:mm:ss.SSS}
+                [%thread]
+                %-5level
+                %logger{36} -
+                %msg%n
+            </pattern>
+        </encoder>
+
+    </appender>
+
+
+    <!-- ========================= -->
+    <!-- ROOT LOGGER                -->
+    <!-- ========================= -->
+
+    <root level="INFO">
+
+        <!-- Print logs in IntelliJ / console -->
+        <appender-ref ref="CONSOLE"/>
+
+        <!-- Save logs to file -->
+        <appender-ref ref="ROLLING_FILE"/>
+
+    </root>
+
+</configuration>
