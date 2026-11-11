@@ -56,6 +56,9 @@ import java.util.List;
             return customer.getEnabled();
         }
 
+        public String getEmail(){
+            return customer.getEmail();
+        }
         public Long customerId(){
             return customer.getId();
         }

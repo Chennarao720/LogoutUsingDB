@@ -14,5 +14,5 @@ public class UserRegisterResponse {
     private Role role;
     private Boolean enabled;
     private String email;
-    private String fullname;
+    private String fullName;
 }

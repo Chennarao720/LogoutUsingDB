@@ -2,7 +2,8 @@ package com.example.productinventory.controller.category;
 
 import com.example.productinventory.dto.category.CategoryRequest;
 import com.example.productinventory.dto.category.CategoryResponse;
-import com.example.productinventory.resources.CategoryStockResponse;
+import com.example.productinventory.dto.category.CategoryStockResponse;
+import com.example.productinventory.dto.category.LowStockResponse;
 import com.example.productinventory.service.category.CategoryService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.extern.slf4j.Slf4j;
@@ -51,5 +52,22 @@ public class CategoryController {
         log.info("Total stock by category retrieved successfully");
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/totalCategires")
+    @SecurityRequirement(name = "bearerAuth")
+    public ResponseEntity<List<CategoryResponse>> categories(){
+       return ResponseEntity.ok(service.findAllCatogories());
+    }
+
+    @GetMapping("/categoryStockResponse")
+    @SecurityRequirement(name = "bearerAuth")
+    public ResponseEntity<List<CategoryStockResponse>> categoryStockResponse(){
+        return ResponseEntity.ok(service.categoryStockResponse());
+    }
+
+    @GetMapping("/lowStockResponse")
+    public ResponseEntity<List<LowStockResponse>> stockResponseResponse(){
+        return ResponseEntity.status(200).body(service.lowStockResponse());
     }
 }

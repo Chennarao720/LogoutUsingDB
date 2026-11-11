@@ -9,6 +9,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -63,13 +64,13 @@ public class SecurityConfig {
             HttpSecurity http)
             throws Exception {
 
-        http
-                // JWT API → disable CSRF
-                .csrf(csrf ->
-                        csrf.disable()
-                )
 
-                // Don't create/use HTTP sessions
+                // JWT API → disable CSRF
+                http
+             .cors(Customizer.withDefaults())
+                .csrf(csrf -> csrf.disable())
+
+        // Don't create/use HTTP sessions
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(
                                 SessionCreationPolicy.STATELESS

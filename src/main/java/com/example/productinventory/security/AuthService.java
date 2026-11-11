@@ -2,6 +2,7 @@ package com.example.productinventory.security;
 
 import com.example.productinventory.dto.Login.LoginRequest;
 import com.example.productinventory.dto.Login.LoginResponse;
+import com.example.productinventory.dto.Login.RefreshTokenResponse;
 import com.example.productinventory.dto.userRegisterDto.UserRegisterRequset;
 import com.example.productinventory.dto.userRegisterDto.UserRegisterResponse;
 import com.example.productinventory.entity.User;
@@ -12,8 +13,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
+import java.util.Collection;
 
 @Service
 public class AuthService {
@@ -49,23 +53,38 @@ public class AuthService {
 
         UserDetails userDetails =(UserDetails) authenticate.getPrincipal();
 
+        CustomUserDetails customUserDetails =
+                (CustomUserDetails) authenticate.getPrincipal();
+
         //for access token
         String accessToken =
                 jwtService.generateToken(userDetails);
 
         //for refreshToken
         String refreshToken= jwtService.generateRefreshToken(userDetails);
-//        log.error("Token generated {}", accessToken);
-        return new LoginResponse(accessToken,refreshToken);
+
+        LoginResponse.UserInfo userInfo=new LoginResponse.UserInfo(customUserDetails.customerId(),
+                userDetails.getUsername(),
+                customUserDetails.getEmail(),
+                customUserDetails.getAuthorities());
+        LoginResponse.LoginData data = new LoginResponse.LoginData(
+                accessToken,
+                refreshToken,
+                "Bearer",
+                900L, // Replace with your actual access-token lifetime in seconds
+                userInfo
+        );
+
+        return new LoginResponse(true, "Login successful", data);
     }
 
-    public LoginResponse refreshToken(String refreshtoken){
+    public RefreshTokenResponse refreshToken(String refreshtoken){
         String s = jwtService.extractUsername(refreshtoken);
         UserDetails userDetails = service.loadUserByUsername(s);
 
         if(jwtService.isTokenValid(refreshtoken,userDetails)){
             String newAccessToken = jwtService.generateToken(userDetails);
-            return new LoginResponse(newAccessToken,refreshtoken);
+            return new RefreshTokenResponse(newAccessToken,refreshtoken);
         }
         else{
             throw new RuntimeException("Invalid refresh token");

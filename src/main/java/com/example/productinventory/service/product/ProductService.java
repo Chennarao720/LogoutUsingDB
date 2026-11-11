@@ -6,14 +6,12 @@ import com.example.productinventory.dto.product.ProductSaveResponse;
 import com.example.productinventory.entity.*;
 import com.example.productinventory.repository.CategoryRepository;
 import com.example.productinventory.repository.ProductRepository;
-import com.example.productinventory.resources.CategoryStockResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+
 
 @Service
 public class ProductService {
