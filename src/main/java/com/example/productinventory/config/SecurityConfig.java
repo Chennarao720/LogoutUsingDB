@@ -87,8 +87,12 @@ public class SecurityConfig {
                                 "/v3/api-docs/**"
                         ).permitAll()
                         .requestMatchers(
-                                "/api/auth/**"
-                        ).permitAll()
+                                "/api/auth/login",
+                                "/api/auth/register"
+                                ).permitAll()
+                        .requestMatchers(
+                                "/api/auth/logout"
+                        ).authenticated()
                         .requestMatchers(HttpMethod.POST, "/products/**")
                         .hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/products/*/stock")

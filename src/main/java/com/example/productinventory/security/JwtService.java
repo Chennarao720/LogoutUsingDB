@@ -4,13 +4,13 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
-import io.jsonwebtoken.security.Keys;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 @Slf4j
@@ -84,7 +84,7 @@ public class JwtService {
                 !isTokenExpired(token);
     }
 
-
+// for login Api purpose
     private boolean isTokenExpired(
             String token) {
 
@@ -106,6 +106,17 @@ public class JwtService {
                 .verifyWith(secretKey)
                 .build()
                 .parseSignedClaims(token);
+    }
+
+    //For logout purpose
+    public LocalDateTime extractExpiration(String token) {
+
+        return parseToken(token)
+                .getPayload()
+                .getExpiration()
+                .toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime();
     }
 }
 
