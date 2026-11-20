@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -108,15 +109,12 @@ public class JwtService {
                 .parseSignedClaims(token);
     }
 
-    //For logout purpose
-    public LocalDateTime extractExpiration(String token) {
-
+    //for logout
+    public Instant extractExpiration(String token) {
         return parseToken(token)
                 .getPayload()
                 .getExpiration()
-                .toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDateTime();
+                .toInstant();
     }
 }
 
